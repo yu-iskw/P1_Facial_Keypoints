@@ -32,6 +32,7 @@ class Net(nn.Module):
         
         self.fc1 = nn.Linear(64 * 54 * 54, 256)
         self.fc1_dropout = nn.Dropout(p=0.25)
+        self.fc1_batcknorm = nn.BatchNorm1d(256)
         
         self.fc2 = nn.Linear(256, 2*68)
         ## Note that among the layers to add, consider including:
@@ -58,9 +59,9 @@ class Net(nn.Module):
         x = self.fc1(x)
         x = F.relu(x)
         x = self.fc1_dropout(x)
+        x = self.fc1_batcknorm(x)
         
         x = self.fc2(x)
-        x = F.log_softmax(x, dim=1)
         
         # a modified x, having gone through all the layers of your model, should be returned
         return x
