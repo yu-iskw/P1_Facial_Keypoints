@@ -1,0 +1,31 @@
+---
+version: 1
+
+kind: notebook
+
+environment:
+  resources:
+    cpu:
+      requests: 6
+      limits: 8
+    memory:
+      requests: 10000
+      limits: 30000
+    gpu:
+      requests: 1
+      limits: 1
+  node_selector:
+    polyaxon: experiments-gpu-t4
+    # polyaxon: experiments-gpu-v100
+  tolerations:
+    - key: nvidia.com/gpu
+      operator: Equal
+      value: present
+      effect: "NoSchedule"
+
+build:
+  image: pytorch/pytorch:1.0.1-cuda10.0-cudnn7-runtime
+  build_steps:
+    - pip install --no-cache-dir -r requirements.txt
+  env_vars:
+    - ['PYTHONPATH', '.:${PYTHONPATH}']
