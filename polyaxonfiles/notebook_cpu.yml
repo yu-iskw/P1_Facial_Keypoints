@@ -1,0 +1,20 @@
+---
+version: 1
+
+kind: notebook
+
+environment:
+  resources:
+    cpu:
+      requests: 20
+      limits: 32
+    memory:
+      requests: 10000
+      limits: 40000
+
+build:
+  image: python:2.7
+  build_steps:
+    - pip install --no-cache-dir -r requirements.txt
+  env_vars:
+    - ['PYTHONPATH', '.:${PYTHONPATH}']
